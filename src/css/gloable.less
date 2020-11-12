@@ -1,0 +1,755 @@
+@defaultSize: 12px ;
+/*背景颜色*/
+@bg-color1: #0081ff;
+@bg-color2: #0081ff;
+/*按钮颜色*/
+@btn-bgcolor: #0081ff;
+@btn-color1: #0081ff;
+@btn-color2: #0081ff;
+/*底部文字颜色*/
+@footer-color:rgba(255,255,255,0.85);
+
+@primary-color: #0081ff;
+@info-color: #70b4f9;
+@success-color: #1ed278;
+@warn-color: #ffa100;
+@danger-color: #ed6114;
+:root{
+
+
+/* 标准色 */
+--red: #e54d42;
+--orange: #f37b1d;
+--yellow: #fbbd08;
+--olive: #8dc63f;
+--green: #39b54a;
+--cyan: #1cbbb4;
+--blue: #0081ff;
+--purple: #6739b6;
+--mauve: #9c26b0;
+--pink: #e03997;
+--brown: #a5673f;
+--grey: #8799a3;
+--black: #333333;
+--darkGray: #666666;
+--gray: #aaaaaa;
+--ghostWhite: #f1f1f1;
+--white: #ffffff;
+/* 浅色 */
+--redLight: #fadbd9;
+--orangeLight: #fde6d2;
+--yellowLight: #fef2ce;
+--oliveLight: #e8f4d9;
+--greenLight: #d7f0db;
+--cyanLight: #d2f1f0;
+--blueLight: #cce6ff;
+--purpleLight: #e1d7f0;
+--mauveLight: #ebd4ef;
+--pinkLight: #f9d7ea;
+--brownLight: #ede1d9;
+--greyLight: #e7ebed;
+/* 渐变色 */
+--gradualRed: linear-gradient(45deg, #f43f3b, #ec008c);
+--gradualOrange: linear-gradient(45deg, #ff9700, #ed1c24);
+--gradualGreen: linear-gradient(45deg, #39b54a, #8dc63f);
+--gradualPurple: linear-gradient(45deg, #9000ff, #5e00ff);
+--gradualPink: linear-gradient(45deg, #ec008c, #6739b6);
+--gradualBlue: linear-gradient(45deg, #0081ff, #1cbbb4);
+/* 阴影透明色 */
+--ShadowSize: 6rpx 6rpx 8rpx;
+--redShadow: rgba(204, 69, 59, 0.2);
+--orangeShadow: rgba(217, 109, 26, 0.2);
+--yellowShadow: rgba(224, 170, 7, 0.2);
+--oliveShadow: rgba(124, 173, 55, 0.2);
+--greenShadow: rgba(48, 156, 63, 0.2);
+--cyanShadow: rgba(28, 187, 180, 0.2);
+--blueShadow: rgba(0, 102, 204, 0.2);
+--purpleShadow: rgba(88, 48, 156, 0.2);
+--mauveShadow: rgba(133, 33, 150, 0.2);
+--pinkShadow: rgba(199, 50, 134, 0.2);
+--brownShadow: rgba(140, 88, 53, 0.2);
+--greyShadow: rgba(114, 130, 138, 0.2);
+--grayShadow: rgba(114, 130, 138, 0.2);
+--blackShadow: rgba(26, 26, 26, 0.2);
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: "微软雅黑";
+	overflow: hidden;
+}
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  height: 100%;
+}
+ul,li{
+	list-style: none;
+}
+/* 字体大小 */
+.font11{
+  font-size: 11px;
+}
+.font12{
+  font-size: 12px;
+}
+.font14{
+  font-size: 14px;
+}
+.font15{
+  font-size: 15px;
+}
+.font17{
+  font-size: 17px;
+}
+.font16{
+  font-size: 16px;
+}
+.font18{
+  font-size: 18px;
+}
+.font23{
+  font-size: 23px;
+}
+.font25{
+  font-size:25px;
+}
+/* 行高 */
+.height25{
+  line-height: 25px
+}
+.height30{
+  line-height: 30px
+}
+.height40{
+  line-height: 40px
+}
+.height45{
+  line-height: 45px
+}
+/* 浮动 */
+.left{
+  float: left
+}
+.right{
+  float: right
+}
+/* 清除浮动 */
+.clear:after {
+  content: '\20';
+  display: block;
+  height: 0;
+  clear: both;
+}
+.clear {
+  *zoom: 1;
+}
+.text-center{
+  text-align: center;
+}
+.text-left{
+  text-align: left;
+}
+.text-right{
+  text-align: right;
+}
+/* felx布局 */
+.flex{
+  display: flex;
+}
+.flex-child{
+  flex: 1;
+}
+/* 背景颜色 */
+.bg-red {
+	background-color: var(--red);
+	color: var(--white);
+}
+
+.bg-orange {
+	background-color: var(--orange);
+	color: var(--white);
+}
+
+.bg-yellow {
+	background-color: var(--yellow);
+	color: var(--black);
+}
+
+.bg-olive {
+	background-color: var(--olive);
+	color: var(--white);
+}
+
+.bg-green {
+	background-color: var(--green);
+	color: var(--white);
+}
+
+.bg-cyan {
+	background-color: var(--cyan);
+	color: var(--white);
+}
+
+.bg-blue {
+	background-color: var(--blue);
+	color: var(--white);
+}
+
+.bg-purple {
+	background-color: var(--purple);
+	color: var(--white);
+}
+
+.bg-mauve {
+	background-color: var(--mauve);
+	color: var(--white);
+}
+
+.bg-pink {
+	background-color: var(--pink);
+	color: var(--white);
+}
+
+.bg-brown {
+	background-color: var(--brown);
+	color: var(--white);
+}
+
+.bg-grey {
+	background-color: var(--grey);
+	color: var(--white);
+}
+
+.bg-gray {
+	background-color: #f0f0f0;
+	color: var(--black);
+}
+
+.bg-black {
+	background-color: var(--black);
+	color: var(--white);
+}
+
+.bg-white {
+	background-color: var(--white);
+	color: var(--darkGray);
+}
+
+.bg-shadeTop {
+	background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.01));
+	color: var(--white);
+}
+
+.bg-shadeBottom {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 1));
+	color: var(--white);
+}
+
+
+.bg-red.light {
+	color: var(--red);
+	background-color: var(--redLight);
+}
+
+.bg-orange.light {
+	color: var(--orange);
+	background-color: var(--orangeLight);
+}
+
+.bg-yellow.light {
+	color: var(--yellow);
+	background-color: var(--yellowLight);
+}
+
+.bg-olive.light {
+	color: var(--olive);
+	background-color: var(--oliveLight);
+}
+
+.bg-green.light {
+	color: var(--green);
+	background-color: var(--greenLight);
+}
+
+.bg-cyan.light {
+	color: var(--cyan);
+	background-color: var(--cyanLight);
+}
+
+.bg-blue.light {
+	color: var(--blue);
+	background-color: var(--blueLight);
+}
+
+.bg-purple.light {
+	color: var(--purple);
+	background-color: var(--purpleLight);
+}
+
+.bg-mauve.light {
+	color: var(--mauve);
+	background-color: var(--mauveLight);
+}
+
+.bg-pink.light {
+	color: var(--pink);
+	background-color: var(--pinkLight);
+}
+
+.bg-brown.light {
+	color: var(--brown);
+	background-color: var(--brownLight);
+}
+
+.bg-grey.light {
+	color: var(--grey);
+	background-color: var(--greyLight);
+}
+
+.bg-gradual-red {
+	background-image: var(--gradualRed);
+	color: var(--white);
+}
+
+.bg-gradual-orange {
+	background-image: var(--gradualOrange);
+	color: var(--white);
+}
+
+.bg-gradual-green {
+	background-image: var(--gradualGreen);
+	color: var(--white);
+}
+
+.bg-gradual-purple {
+	background-image: var(--gradualPurple);
+	color: var(--white);
+}
+
+.bg-gradual-pink {
+	background-image: var(--gradualPink);
+	color: var(--white);
+}
+
+.bg-gradual-blue {
+	background-image: var(--gradualBlue);
+	color: var(--white);
+}
+
+.shadow[class*="-red"] {
+	box-shadow: var(--ShadowSize) var(--redShadow);
+}
+
+.shadow[class*="-orange"] {
+	box-shadow: var(--ShadowSize) var(--orangeShadow);
+}
+
+.shadow[class*="-yellow"] {
+	box-shadow: var(--ShadowSize) var(--yellowShadow);
+}
+
+.shadow[class*="-olive"] {
+	box-shadow: var(--ShadowSize) var(--oliveShadow);
+}
+
+.shadow[class*="-green"] {
+	box-shadow: var(--ShadowSize) var(--greenShadow);
+}
+
+.shadow[class*="-cyan"] {
+	box-shadow: var(--ShadowSize) var(--cyanShadow);
+}
+
+.shadow[class*="-blue"] {
+	box-shadow: var(--ShadowSize) var(--blueShadow);
+}
+
+.shadow[class*="-purple"] {
+	box-shadow: var(--ShadowSize) var(--purpleShadow);
+}
+
+.shadow[class*="-mauve"] {
+	box-shadow: var(--ShadowSize) var(--mauveShadow);
+}
+
+.shadow[class*="-pink"] {
+	box-shadow: var(--ShadowSize) var(--pinkShadow);
+}
+
+.shadow[class*="-brown"] {
+	box-shadow: var(--ShadowSize) var(--brownShadow);
+}
+
+.shadow[class*="-grey"] {
+	box-shadow: var(--ShadowSize) var(--greyShadow);
+}
+
+.shadow[class*="-gray"] {
+	box-shadow: var(--ShadowSize) var(--grayShadow);
+}
+
+.shadow[class*="-black"] {
+	box-shadow: var(--ShadowSize) var(--blackShadow);
+}
+
+.shadow[class*="-white"] {
+	box-shadow: var(--ShadowSize) var(--blackShadow);
+}
+
+.text-shadow[class*="-red"] {
+	text-shadow: var(--ShadowSize) var(--redShadow);
+}
+
+.text-shadow[class*="-orange"] {
+	text-shadow: var(--ShadowSize) var(--orangeShadow);
+}
+
+.text-shadow[class*="-yellow"] {
+	text-shadow: var(--ShadowSize) var(--yellowShadow);
+}
+
+.text-shadow[class*="-olive"] {
+	text-shadow: var(--ShadowSize) var(--oliveShadow);
+}
+
+.text-shadow[class*="-green"] {
+	text-shadow: var(--ShadowSize) var(--greenShadow);
+}
+
+.text-shadow[class*="-cyan"] {
+	text-shadow: var(--ShadowSize) var(--cyanShadow);
+}
+
+.text-shadow[class*="-blue"] {
+	text-shadow: var(--ShadowSize) var(--blueShadow);
+}
+
+.text-shadow[class*="-purple"] {
+	text-shadow: var(--ShadowSize) var(--purpleShadow);
+}
+
+.text-shadow[class*="-mauve"] {
+	text-shadow: var(--ShadowSize) var(--mauveShadow);
+}
+
+.text-shadow[class*="-pink"] {
+	text-shadow: var(--ShadowSize) var(--pinkShadow);
+}
+
+.text-shadow[class*="-brown"] {
+	text-shadow: var(--ShadowSize) var(--brownShadow);
+}
+
+.text-shadow[class*="-grey"] {
+	text-shadow: var(--ShadowSize) var(--greyShadow);
+}
+
+.text-shadow[class*="-gray"] {
+	text-shadow: var(--ShadowSize) var(--grayShadow);
+}
+
+.text-shadow[class*="-black"] {
+	text-shadow: var(--ShadowSize) var(--blackShadow);
+}
+
+
+
+/* 字体颜色 */
+.color1{
+  color:#409EFF;
+}
+.color2{
+  color:#F56C6C;
+}
+.color3{
+  color:#909399;
+}
+/* 边框 */
+.border{
+	border: 1px solid #DCDFE6;
+}
+.border-left{
+	border-left: 1px solid #DCDFE6;
+}
+.border-right{
+	border-right: 1px solid #DCDFE6;
+}
+.border-top{
+	border-top: 1px solid #DCDFE6;
+}
+.border-bottom{
+	border-bottom: 1px solid #DCDFE6;
+}
+/* 圆 */
+.circle{
+	border-radius: 50%;
+}
+/*鼠标手势*/
+.pointer{
+	cursor: pointer;
+}
+/*侧边栏样式*/
+.panel-left-menu li{
+
+		line-height: 40px;
+		cursor: pointer;
+    padding: 5px 25px;
+    word-break: break-all;
+}
+.panel-left-active {
+		background: #daeddb;
+		color: #47a74c;
+		border-right: 2px solid #47a74c;
+}
+// 中间内容样式
+
+.content-main {
+  height: 100%;
+}
+
+
+
+/*默认样式*/
+.defaultColor{
+  color:rgba(36,158,30,1);
+}
+/*修改element默认样式*/
+.el-slider__runway,.el-slider__bar{
+	height: 4px;
+}
+.el-slider__bar{
+	background-color: rgba(36,158,30,1);
+}
+.el-slider__button{
+	width: 8px;
+	height: 8px;
+	border: 2px solid rgba(36,158,30,1)
+}
+.el-dialog__wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.el-dialog{
+	min-width: 350px;
+  margin-top: -5vh !important;
+}
+/* 分页底部 yi*/
+.dibu{
+  padding-bottom: 10px;
+  padding-top: 20px;
+}
+.dibu span {
+  font-family: 'PingFang SC Regular', 'PingFang SC';
+  font-weight: 400;
+  font-style: normal;
+  color: rgba(0, 0, 0, 0.427450980392157);
+  /* line-height: 60px; */
+}
+.dibu .el-pagination {
+  float: right;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active{
+  background-color: #0081ff;
+}
+.el-select-dropdown__item.selected{
+  color: #0081ff;
+}
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: #0081ff;
+}
+.el-pagination__sizes .el-input .el-input__inner:hover {
+  border-color: #0081ff;
+}
+.occupy {
+  display: inline-block!important;
+  width:100%!important;
+}
+.o-status{
+  width: 5px;
+  height: 5px;
+  display: inline-block;
+  border-radius: 50%;
+  margin-bottom: 2px;
+  margin-right: 2px;
+}
+.look .el-form-item__content span{
+  word-break: break-all!important;
+}
+/* 左边样式 */
+.leftstyle{
+  height:100%;
+  background-color:#000B01;
+  color: #909399;
+}
+.hovers:hover{
+  background-color: rgba(255,255,255,0.3);
+}
+.actives{
+  background-color: #fff!important;
+  color: #000;
+}
+/* 空间选中样式 */
+.works-active{
+  background-color: #fff!important;
+  font-weight: 700!important;
+  border-radius: 7px 7px 0 0!important;
+}
+/*指南针样式*/
+.rotate-north {
+  top: 65px;
+  left: 310px;
+}
+/* 通用的分割线样式 */
+.split-bottom{
+  border-bottom: 1px solid #eeeeee;
+  height: 0;
+  width: 100%;
+  margin-top: 15px;
+}
+.split-right::after{
+  content: "";
+  display: inline-block;
+  border-right: 1px solid #999999;
+  width: 0;
+  height: 70%;
+  position: relative;
+  top: 15%;
+}
+// 滚动条的美化
+.innerbox{
+  overflow-y: auto;
+  height: 210px;
+}
+  .innerbox::-webkit-scrollbar {/*滚动条整体样式*/
+      width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+      height: 4px;
+      scrollbar-arrow-color:red;
+  }
+  .innerbox::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+      border-radius: 5px;
+      -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+      background: rgba(0,0,0,0.2);
+      scrollbar-arrow-color:red;
+  }
+  .innerbox::-webkit-scrollbar-track {/*滚动条里面轨道*/
+      -webkit-box-shadow: none;
+      border-radius: 0;
+      background: none;
+  }
+.app{
+  padding: 20px;
+}
+// element tree
+.el-left .el-tree {
+  background: #081726;
+  color: #fff;
+}
+.el-left .el-tree-node__content {
+  &:hover {
+    background: #ffffff;
+    color: #333333;
+  }
+}
+.el-left .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+  background-color: #ffffff;
+  color: #000000;
+}
+.el-left .el-tree-node:focus>.el-tree-node__content{
+  background: #ffffff;
+    color: #333333;
+}
+.el-dialog__body{
+  max-height: 600px;
+  overflow-y: auto;
+}
+// openlayers相关样式重置
+.ol-control button{
+  background-color:rgba(0,6,11,0.6)!important ;
+}
+.ol-control{
+  background-color: rgba(0,0,0,0.1)!important ;
+}
+.ol-attribution.ol-uncollapsible{
+  display: none;
+}
+.ol-overviewmap {
+    top: auto;
+    left: auto !important ;
+    right: 0em;
+    bottom: 0em;
+    /*右侧显示*/
+    /*顶部显示*/
+ }
+.tooltip-static,.tooltip-measure{
+  font-size: 14px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 3px;
+  // text-shadow: 1px 1px 0px white;
+}
+/** 重置表格元素 **/
+table { border-collapse: collapse; border-spacing: 0; }
+
+
+
+
+/* 修改弹窗头部 */
+.el-dialog__header{
+  background-color: #0081ff;
+  padding: 10px 20px;
+  color: #fff;
+  /* text-align: center; */
+
+}
+.el-dialog__title{
+  color: #fff !important;
+  font-size:17px;
+  font-family:MicrosoftYaHei-Bold;
+  font-weight:bold;
+}
+.el-dialog__headerbtn .el-dialog__close{
+  color: #fff!important;
+}
+.el-dialog__headerbtn .el-dialog__close:hover{
+  color: #fff!important;
+}
+.el-dialog__headerbtn:focus .el-dialog__close, .el-dialog__headerbtn:hover .el-dialog__close {
+  color: #fff!important;
+}
+.el-dialog__headerbtn{
+  top: 10px;
+}
+// 阴影
+.shadow-warp {
+	position: relative;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-warp:before,
+.shadow-warp:after {
+	position: absolute;
+	content: "";
+	top: 20rpx;
+	bottom: 30rpx;
+	left: 20rpx;
+	width: 50%;
+	box-shadow: 0 15px 10px rgba(0, 0, 0, 0.2);
+	transform: rotate(-3deg);
+	z-index: -1;
+}
+
+.shadow-warp:after {
+	right: 10px;
+	left: auto;
+	transform: rotate(3deg);
+}

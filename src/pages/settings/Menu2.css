@@ -1,0 +1,15 @@
+.red{
+    color: red;
+}
+.blue{
+    color: blue;
+}
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+.children{
+    margin-left: 20px;
+}
