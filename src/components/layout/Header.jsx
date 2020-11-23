@@ -2,7 +2,7 @@ import React from "react";
 // import { connect } from "react-redux";
 // import { Modal, Button } from "antd";
 import "./layout.less";
-import { Link } from 'react-router-dom';
+import { NavLink  } from 'react-router-dom';
 import { Row, Col } from 'antd';
 import {$_menuData} from '../menu';
 export default class NavBar extends React.Component {
@@ -40,7 +40,10 @@ export default class NavBar extends React.Component {
     // const { homeData={} } = this.props;
     const { img, visible,menuData } = this.state;
     const listItem = menuData.map(md=>
-      <li key={md.name}> <Link className="nav-link" activeclasname="nav-active" to={md.route}>{md.name}</Link> </li> 
+      <li key={md.name}> 
+        <i className={md.icon}></i> 
+        <NavLink  className="nav-link"  to={md.route}  activeClassName="nav-active">{md.name}</NavLink> 
+      </li> 
     )
     return (
       <div className="header">        
@@ -56,7 +59,8 @@ export default class NavBar extends React.Component {
               </ul>
           </Col>
         </Row>
-              
+        
+
           
         </div>
       </div>

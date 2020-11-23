@@ -1,5 +1,4 @@
 import React from "react";
-// import { connect } from "react-redux";
 // import { Modal, Button } from "antd";
 // import "./index.less";
 import store from "../../store/redux";
@@ -39,7 +38,7 @@ class Menu2 extends React.Component {
   render() {
     const {changeName,toggle,state} = this.props
     return <div>
-      <h1>react-redux</h1>
+      <h1>settings页面，展示redux</h1>
      <div>{state.name}</div>
       {state.isShow&&<div>显示</div>}
       <button onClick={changeName}>changeName</button>

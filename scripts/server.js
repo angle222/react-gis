@@ -1,11 +1,9 @@
 var serve = require("koa-static");
 var router = require("koa-router")();
-var path = require("path");
 var koa = require("koa");
 var proxy = require("koa-proxy");
 var app = koa();
-var fs = require("fs");
-var querystring = require("querystring");
+// var querystring = require("querystring");
 
 /**
  * ture为开启本地mock，否则走服务器
@@ -32,25 +30,25 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 
 app.use(function*(next) {
-  this.query.debug = true;
+  // this.query.debug = true;
   
-  // mock某公司的信息
-  this.query.mockUserId = '0434324346539122932566287';
-  this.query.corpId = '82332bac8d9264b69135c2f4657eb6378f';
+  // // mock某公司的信息
+  // this.query.mockUserId = '0434324346539122932566287';
+  // this.query.corpId = '82332bac8d9264b69135c2f4657eb6378f';
 
-  console.log(
-    "使用 用户ID=" +
-    this.query.mockUserId +
-    " 公司ID=" +
-    this.query.corpId +
-    " 公司名称=" +
-    this.mockName || "请补充"
-  );
+  // console.log(
+  //   "使用 用户ID=" +
+  //   this.query.mockUserId +
+  //   " 公司ID=" +
+  //   this.query.corpId +
+  //   " 公司名称=" +
+  //   this.mockName || "请补充"
+  // );
 
-  this.querystring = querystring.stringify(this.query);
+  // this.querystring = querystring.stringify(this.query);
 
   yield proxy({
-    host: 'https://www.xxxx.com',
+    host: 'http://192.168.0.96:8095/',
     //host: 'http://11.163.169.232:7001',
     // match: /^(\/admin\/|\/app\/|\/overtime\/|\/calculator\/)/
   });
@@ -62,10 +60,10 @@ var callback = app.callback();
 var server = require("http").createServer(function(req, res) {
   // 如果走本地开发直接访问线上环境服务器，就需要设定cookie;
   // 走本地mock不需要理会一下设置
-  var cookie = 'the website‘s cookie';  // 关键点
+  // var cookie = 'the website‘s cookie';  // 关键点
 
-  req.headers['cookie'] =  cookie;
-  req.rawHeaders['cookie'] = cookie;
+  // req.headers['cookie'] =  cookie;
+  // req.rawHeaders['cookie'] = cookie;
   callback(req, res);
 });
 server.listen(3001, function() {

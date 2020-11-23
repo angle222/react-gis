@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 // import { connect } from "react-redux";
 import { Table, Button ,Modal,Form, Input,  Checkbox} from "antd";
-import "./Menu1.css";
+import "./MapService.css";
+import {getUserList} from "../../api/user"
 const layout = {
   labelCol: {
     span: 8,
@@ -74,12 +75,13 @@ const Myform = () => {
           保存
         </Button>
       </Form.Item>
-      <input value={value} placeholder="请输入" onInput={(e)=>inputChange(e)}/>
-      <span>{value}</span>
+      {/* <input value={value} placeholder="请输入" onChange={(e)=>inputChange(e)} onInput={(e)=>inputChange(e)}/>
+      <span>{value}</span> */}
     </Form>
   );
 };
-export default class Menu1 extends React.Component {
+// export default Myform
+export default class MapService extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -87,38 +89,34 @@ export default class Menu1 extends React.Component {
       dataSource:[],
       columns:[],
       selectedRowKeys:[],
+      pageNumber:1,
+      pageSize: 10,
+      total:0,
       loading:false,
-      value:''
+      searchValue:''
     };
   }
   componentDidMount(){
     console.log('componentDidMount')
+    getUserList().then((res)=>{
+      console.log(res)
+    })
     // 请求数据
     this.getData()
   }
-  getData(){
+  async getData(){
     this.setState({
       loading: true
     });
-    setTimeout(() => {
-      this.setState({
-        dataSource:[{
-          id: '1',
-          name: '胡彦斌',
-          state:1,
-          age: 32,
-          address: '西湖区湖底公园1号',
-        },
-        {
-          id: '2',
-          name: '胡彦祖',
-          state:2,
-          age: 42,
-          address: '西湖区湖底公园1号',
-        }],
-        loading:false
-      })
-    }, 500);
+    console.log(this.state.searchValue)
+    let postData = {pageNumber:this.state.pageNumber,pageSize:this.state.pageSize,name:this.state.searchValue}
+    let res = await getUserList(postData);
+    console.log(res)
+    this.setState({
+      total:res.totalElements,
+      dataSource:res.content,
+      loading: false
+    });
   }
   showModal = () => {
     this.setState({
@@ -164,7 +162,7 @@ export default class Menu1 extends React.Component {
   render() {
     // const { homeData={} } = this.props;
     console.log('render')
-    const {visible,dataSource,loading ,selectedRowKeys} = this.state;
+    const {visible,dataSource,pageSize,pageNumber,total,loading ,selectedRowKeys} = this.state;
     const stationStateDict = {
       2:'成功',
       1:'失败'
@@ -174,37 +172,39 @@ export default class Menu1 extends React.Component {
     }
     const columns = [
       {
-        title: '姓名',
+        title: '登录名',
         dataIndex: 'name',
         key: 'name',
       },
       {
-        title: '年龄',
-        dataIndex: 'age',
-        key: 'age',
-        render:(text, record)=>{
-
-        return <span>{record>18?'已成年':'未成年'}</span>
-        }
+        title: '用户名',
+        dataIndex: 'username',
+        key: 'username'
       },
       {
-        title: '状态',
-        dataIndex: 'state',
-        key: 'state',
-        render: (val) => {
-          let sate=""
-          if(val===1){
-            sate="11111"
-          }else{
-            sate="22222"
-          }
-          return sate
-        }
+        title: '所属部门',
+        dataIndex: 'deptNames',
+        key: 'deptNames',
+        render: (deps) => (
+          <div>
+          {deps.map(dep => {
+            return (
+              <span className="block" key={dep}>{dep}</span>
+            );
+          })}
+          </div>
+         
+        )
       },
       {
-        title: '住址',
-        dataIndex: 'address',
-        key: 'address',
+        title: '角色名称',
+        dataIndex: 'roleName',
+        key: 'roleName',
+      },
+      {
+        title: '创建事件',
+        dataIndex: 'createTime',
+        key: 'createTime',
       },
       {
         title: '操作',
@@ -221,17 +221,42 @@ export default class Menu1 extends React.Component {
         ),
       },
     ];
+    const pagination = {
+      pageSize,
+      current:pageNumber,
+      total:total,
+      onChange:()=>{
+
+      }
+    }
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange
     };
+    const { Search } = Input;
+    const onSearch = value =>{
+      
+      this.setState({searchValue:value},function(){
+        this.getData()
+      });
+      
+    } 
     return (
-      <div className="menu1">
-        <input value={this.state.value}  placeholder="请输入" onInput={this.inputChange}/>
+      <div className="content">
+        <div className="toolbar">
+        <Button type="primary" onClick={this.showModal}>新建</Button>
+        <Button type="danger"  onClick={this.banchDel}>批量删除</Button>
+        <Search
+          placeholder="输入关键词搜索"
+          allowClear
+          onSearch={onSearch}
+          style={{ width: 200, margin: '0 10px' }}
+        />
+        </div>
+        {/* <input value={this.state.value}  placeholder="请输入" onChange={this.inputChange} onInput={this.inputChange}/> */}
         <b>{this.state.value}</b>
-        <Button onClick={this.showModal}>新建</Button>
-        <Button onClick={this.banchDel}>批量删除</Button>
-        <Table bordered loading={loading} rowKey="id" rowSelection={rowSelection} dataSource={dataSource} columns={columns} />
+        
+        <Table bordered loading={loading} rowKey="id" rowSelection={rowSelection} dataSource={dataSource} pagination={pagination} columns={columns} />
         <Modal
           title="新建数据"
           visible={visible}

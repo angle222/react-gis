@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import "./css/gloable.less"
 import './index.css';
 import "./css/reset.css"
+import "./assets/font/iconfont.css";
 
 import App from './pages/App';
 import * as serviceWorker from './serviceWorker';

@@ -1,0 +1,12 @@
+.content{
+    padding: 20px;
+}
+.toolbar {
+    margin: 15px 0;
+}
+.block{
+    padding: 5px 7px;
+    border-radius: 30px;
+    background-color: #e5e5e5;
+    margin: 0 2px;
+}

@@ -14,6 +14,7 @@
       position: fixed;
       z-index: 101 !important;
       top: 0;
+      overflow: hidden;
     }
   
     .logos {
@@ -53,7 +54,12 @@
         font-family: MicrosoftYaHei;
         font-weight: 300;
         box-sizing: border-box;
-        
+        a.nav-link{
+          color: #ffffff;
+        }
+        a.nav-active{
+          color: #109bff;
+        }
         i{
             color: #FFFFFF;
         }
@@ -89,4 +95,11 @@
         color: #fff !important;
       }
     }
+  }
+  .footer{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    text-align: center;
   }

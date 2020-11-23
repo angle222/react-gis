@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route,IndexRoute } from 'react-router-dom';
 
 import Home from './components/layout/Home';
 import MapService from './pages/mapservice/MapService';
@@ -9,9 +9,12 @@ class router extends Component {
     render() {
         return ( 
         <div className="Router">
-          <Route path='/' component={Home}></Route>
-          <Route path='/mapservice' component={MapService}></Route>
-          <Route path='/settings' component={Settings}></Route>
+          <Route path='/' component={Home}>
+            <IndexRoute component={Home}/>
+            <Route path='mapservice' component={MapService}/>
+            <Route path='setting' component={Settings}/>
+          </Route>
+          
         </div>
     
         );
