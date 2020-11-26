@@ -3,6 +3,7 @@ import React from "react";
 // import "./index.less";
 import store from "../../store/redux";
 import { connect } from "react-redux";
+import { Link,Route  } from 'react-router-dom';
 class Menu4 extends React.Component {
   componentDidMount() {
     // console.log()
@@ -39,10 +40,12 @@ class Menu2 extends React.Component {
     const {changeName,toggle,state} = this.props
     return <div>
       <h1>settings页面，展示redux</h1>
-     <div>{state.name}</div>
-      {state.isShow&&<div>显示</div>}
-      <button onClick={changeName}>changeName</button>
-      <button onClick={toggle}>toggle</button>
+     <button> <Link to="/setting/set1">设置1</Link> </button>
+     <button><Link to="/setting/set2">设置2</Link></button>
+     <button><Link to="/setting/set3">设置3</Link></button>
+     <Route path='/setting/set1' render={props=><div>设置1的内容</div>}/>
+     <Route path='/setting/set2' render={props=><div>设置2的内容</div>}/>
+     <Route path='/setting/set3' render={props=><div>设置3的内容</div>}/>
     </div>
   }
 }

@@ -2,7 +2,7 @@ import React from "react";
 // import { connect } from "react-redux";
 // import { Modal, Button } from "antd";
 // import "./index.less";
-
+import Header from "./Header.jsx"
 export default class Lander extends React.Component {
   constructor(props) {
     super(props);
@@ -38,9 +38,11 @@ export default class Lander extends React.Component {
     const { img, visible } = this.state;
     
     return (
-      <div className="sub-page">
-        
-        <h2 onClick={this.showModal}>我是Home组件</h2>
+      <div className="main">  
+        <Header></Header>
+        <div className="main">
+          子路由切换的部分
+        </div>
       </div>
     );
   }

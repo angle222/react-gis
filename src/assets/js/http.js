@@ -5,7 +5,7 @@ import { message} from 'antd';
 var $http
 // 配置请求地址
 $http = axios.create({
-  baseURL:'/JXGISServer',
+  baseURL:'/datagdw',
   // timeout: 60000
   timeout: 60000 * 10
 })

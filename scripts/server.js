@@ -48,8 +48,8 @@ app.use(function*(next) {
   // this.querystring = querystring.stringify(this.query);
 
   yield proxy({
-    host: 'http://192.168.0.96:8095/',
-    //host: 'http://11.163.169.232:7001',
+    // host: 'http://192.168.0.96:8095/',
+    host: 'http://192.168.0.177:8080/',
     // match: /^(\/admin\/|\/app\/|\/overtime\/|\/calculator\/)/
   });
 

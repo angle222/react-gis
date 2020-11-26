@@ -1,6 +1,8 @@
-import { Button ,Form, Input,  Checkbox} from "antd";
+import { Button ,Form, Input,  Checkbox,message} from "antd";
 import React, { useState,useEffect } from "react";
-import axios from 'axios';
+import md5 from 'js-md5'
+import {userLogin} from '../../api/user';
+import "./login.css"
 const layout = {
     labelCol: {
       span: 8,
@@ -15,37 +17,29 @@ const layout = {
       span: 16,
     },
   };
-  const Myform = (myval) => {
-    console.log('form',myval)
-    const onFinish = values => {
+  const Login = (props) => {
+    const onFinish = async values => {
       console.log('Success:', values);
-    //   传值给子组件
-    myval.handleEmail('我是父组件传给你的值')
-      axios.post("/crawler/user/login",values)
+        let postData = {
+            'username': values.username,
+            'password': md5(values.password)
+        }
+        let data = await userLogin(postData)
+        console.log(data)
+        message.success('登陆成功');
+        // 跳转路由
+        console.log(props)
+        props.history.push("/setting")
     };
   
     const onFinishFailed = errorInfo => {
       console.log('Failed:', errorInfo);
     };
-    const [value,setValue] = useState()
-    const [count,setCount] = useState(0)
-    function inputChange(e){
-      console.log(e.target,e.target.value)
-      setValue(e.target.value)
-    }
-    useEffect(() => {
-        // let timer = setInterval(()=>{
-           
-        //    setCount(count+1)
-        // },1000)
-        // return ()=>{
-        //     clearInterval(timer)
-        // }
-      });
-      useEffect(() => {
-     
-      })
     return (
+        <div className="login">
+        <div className="login-form">
+            <img style={{width:'460px'}} className="left" src={require('@/images/link_bg.png')} alt="logo" />
+            <div className="container">
       <Form
         {...layout}
         name="basic"
@@ -55,13 +49,14 @@ const layout = {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
+          <h2 className="text-center">登录</h2>
         <Form.Item
           label="用户"
-          name="myname"
+          name="username"
           rules={[
             {
               required: true,
-              message: 'Please input your username!',
+              message: '请输入用户名!',
             },
           ]}
         >
@@ -74,7 +69,7 @@ const layout = {
           rules={[
             {
               required: true,
-              message: 'Please input your password!',
+              message: '请输入密码!',
             },
           ]}
         >
@@ -90,12 +85,10 @@ const layout = {
             保存
           </Button>
         </Form.Item>
-        <input value={value} placeholder="请输入" onInput={(e)=>inputChange(e)}/>
-        <span>{value}</span>
-        <Button type="primary" htmlType="button">
-            计时器{count}
-        </Button>
       </Form>
+      </div>
+      </div>
+      </div>
     );
   };
-  export default Myform
+  export default Login

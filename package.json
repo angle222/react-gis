@@ -2,7 +2,6 @@
   "name": "react-app",
   "version": "0.1.0",
   "private": true,
-
   "scripts": {
     "dev": "node scripts/start.js",
     "server": "node scripts/server.js",
@@ -11,11 +10,12 @@
     "test": "node scripts/test.js --env=jsdom"
   },
   "dependencies": {
-    "antd": "^3.11.1",
+    "antd": "^4.8.5",
     "axios": "^0.21.0",
     "babel-plugin-import": "^1.1.1",
     "http-proxy-middleware": "^1.0.6",
     "js-cookie": "^2.1.4",
+    "js-md5": "^0.7.3",
     "node-sass": "^4.14.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",

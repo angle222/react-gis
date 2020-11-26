@@ -1,18 +1,15 @@
 import React from "react";
-// import { connect } from "react-redux";
-// import { Modal, Button } from "antd";
 import "./layout.less";
 import { NavLink  } from 'react-router-dom';
-import { Row, Col } from 'antd';
+import { Row, Col ,Dropdown,Menu} from 'antd';
 import {$_menuData} from '../menu';
+import {loginOut} from "../../api/user"
 export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       menuData:$_menuData,
-      visible: false,
-      img:
-        "https://orig00.deviantart.net/95a9/f/2012/363/6/4/pixel_duck_by_pixeldinosaur-d5pkk28.png"
+      visible: false
     };
   }
 
@@ -28,12 +25,10 @@ export default class NavBar extends React.Component {
       visible: false
     });
   };
-
-  handleCancel = e => {
-    console.log(e);
-    this.setState({
-      visible: false
-    });
+  // 退出事件
+  logout = e => {
+    console.log("要退出啦")
+    loginOut()
   };
 
   render() {
@@ -45,6 +40,12 @@ export default class NavBar extends React.Component {
         <NavLink  className="nav-link"  to={md.route}  activeClassName="nav-active">{md.name}</NavLink> 
       </li> 
     )
+    const menu = (
+      <Menu>
+      <Menu.Item><span onClick={this.logout}>退出</span></Menu.Item>
+      </Menu>
+     
+    );
     return (
       <div className="header">        
         <div className="container">
@@ -57,11 +58,12 @@ export default class NavBar extends React.Component {
               <ul className="list">
               {listItem}
               </ul>
+              <Dropdown overlay={menu} trigger={['click']}>
+                <span className="user-name">用 户</span>
+                
+              </Dropdown>
           </Col>
         </Row>
-        
-
-          
         </div>
       </div>
     );
