@@ -3,7 +3,7 @@
     height: 100%;
     background: var(--gradualBlue);
 }
-.login-form{
+.loginForm{
     width: 1440px;
     height: 614px;
     overflow: hidden;

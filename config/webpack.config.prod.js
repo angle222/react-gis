@@ -204,6 +204,7 @@ module.exports = {
             // in the main CSS file.
             {
                 test: /\.css$/,
+                exclude: /\.module\.css$/,
                 loader: ExtractTextPlugin.extract(
                     Object.assign(
                         {
@@ -242,10 +243,46 @@ module.exports = {
                 )
                 // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
             },
-
+            {
+                test: /\.module\.less$/,
+                use: [
+                    require.resolve('style-loader'),
+                    {
+                        loader: require.resolve('css-loader'),
+                        options: {
+                            importLoaders: 1
+                        },
+                    },
+                    {
+                        loader: require.resolve('postcss-loader'),
+                        options: {
+                            ident: 'postcss',
+                            plugins: () => [
+                                require('postcss-flexbugs-fixes'),
+                                autoprefixer({
+                                    browsers: [
+                                        '>1%',
+                                        'last 4 versions',
+                                        'Firefox ESR',
+                                        'not ie < 9', // React doesn't support IE8 anyway
+                                    ],
+                                    flexbox: 'no-2009',
+                                }),
+                            ],
+                        },
+                    },
+                    {
+                        loader: require.resolve('less-loader'),
+                        options: {
+                            importLoaders: 2,
+                        },
+                    },
+                ],
+            },
             // Parse less files and modify variables
             {
                 test: /\.less$/,
+                exclude: /\.module\.less$/,
                 use: [
                     require.resolve("style-loader"),
                     require.resolve("css-loader"),
@@ -274,6 +311,42 @@ module.exports = {
                         }
                     }
                 ]
+            },
+            {
+                test: /\.module\.less$/,
+                use: [
+                    require.resolve('style-loader'),
+                    {
+                        loader: require.resolve('css-loader'),
+                        options: {
+                            importLoaders: 1
+                        },
+                    },
+                    {
+                        loader: require.resolve('postcss-loader'),
+                        options: {
+                            ident: 'postcss',
+                            plugins: () => [
+                                require('postcss-flexbugs-fixes'),
+                                autoprefixer({
+                                    browsers: [
+                                        '>1%',
+                                        'last 4 versions',
+                                        'Firefox ESR',
+                                        'not ie < 9', // React doesn't support IE8 anyway
+                                    ],
+                                    flexbox: 'no-2009',
+                                }),
+                            ],
+                        },
+                    },
+                    {
+                        loader: require.resolve('less-loader'),
+                        options: {
+                            importLoaders: 2,
+                        },
+                    },
+                ],
             },
             {
                 test: /\.style$/,

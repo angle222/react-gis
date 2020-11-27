@@ -1,6 +1,8 @@
 // 引入axios
 import axios from 'axios';
 import { message} from 'antd';
+import {withRouter} from "react-router-dom"
+import {getCookie,delCookie} from "../../utils/cookie"
 // 创建新的axios实例
 var $http
 // 配置请求地址
@@ -28,9 +30,9 @@ let removeSource = (config) => {
 // 添加请求拦截器
 $http.interceptors.request.use( config =>{
   // 再发送请求 之前重新配置header
-  // if (window.sessionStorage.getItem('dataUser')) {
-  //   config.headers.common['Authorization'] = window.sessionStorage.getItem('dataUser')
-  // }
+  if (getCookie('dataUser')) {
+    config.headers.common['Authorization'] = getCookie('dataUser')
+  }
   removeSource(config)
     config.cancelToken = new CancelToken((c) => {
         // 将取消函数存起来

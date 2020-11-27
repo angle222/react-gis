@@ -122,10 +122,6 @@ module.exports = {
                 ],
                 include: paths.appSrc
             },
-            {
-                test: /\.scss$/,
-                loaders: ['style-loader', 'css-loader', 'sass-loader'],
-            },
             // ** ADDING/UPDATING LOADERS **
             // The "file" loader handles all assets unless explicitly excluded.
             // The `exclude` list *must* be updated with every change to loader extensions.
@@ -176,7 +172,7 @@ module.exports = {
                 loader: require.resolve("babel-loader"),
                 options: {
                     plugins: [
-                        ["import", [{ libraryName: "antd", style: true }]] // import less
+                        ["import", [{ libraryName: "antd", style: 'css' }]] // import less
                     ],
                     // This is a feature of `babel-loader` for webpack (not Babel itself).
                     // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -205,12 +201,44 @@ module.exports = {
             // in development "style" loader enables hot editing of CSS.
             {
                 test: /\.css$/,
+                exclude: /\.module\.css$/,
+                use: [
+                    require.resolve('style-loader'),
+                    {
+                        loader: require.resolve('css-loader'),
+                        options: {
+                            importLoaders: 1
+                        },
+                    },
+                    {
+                        loader: require.resolve('postcss-loader'),
+                        options: {
+                            ident: 'postcss',
+                            plugins: () => [
+                                require('postcss-flexbugs-fixes'),
+                                autoprefixer({
+                                    browsers: [
+                                        '>1%',
+                                        'last 4 versions',
+                                        'Firefox ESR',
+                                        'not ie < 9', // React doesn't support IE8 anyway
+                                    ],
+                                    flexbox: 'no-2009',
+                                }),
+                            ],
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.module\.css$/,
                 use: [
                     require.resolve('style-loader'),
                     {
                         loader: require.resolve('css-loader'),
                         options: {
                             importLoaders: 1,
+                            modules: true
                         },
                     },
                     {
@@ -235,12 +263,49 @@ module.exports = {
             },
             {
                 test: /\.less$/,
+                exclude: /\.module\.less$/,
                 use: [
                     require.resolve('style-loader'),
                     {
                         loader: require.resolve('css-loader'),
                         options: {
-                            importLoaders: 1,
+                            importLoaders: 1
+                        },
+                    },
+                    {
+                        loader: require.resolve('postcss-loader'),
+                        options: {
+                            ident: 'postcss',
+                            plugins: () => [
+                                require('postcss-flexbugs-fixes'),
+                                autoprefixer({
+                                    browsers: [
+                                        '>1%',
+                                        'last 4 versions',
+                                        'Firefox ESR',
+                                        'not ie < 9', // React doesn't support IE8 anyway
+                                    ],
+                                    flexbox: 'no-2009',
+                                }),
+                            ],
+                        },
+                    },
+                    {
+                        loader: require.resolve('less-loader'),
+                        options: {
+                            importLoaders: 2,
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.module\.less$/,
+                use: [
+                    require.resolve('style-loader'),
+                    {
+                        loader: require.resolve('css-loader'),
+                        options: {
+                            importLoaders: 1
                         },
                     },
                     {
