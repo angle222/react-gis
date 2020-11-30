@@ -8,11 +8,20 @@ export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      menuData:$_menuData,
+      menuData:[],
       visible: false
     };
   }
-
+  // 生命周期函数
+  componentWillMount(){
+    // console.log('willmounted')
+    const pms = sessionStorage.getItem('premissions')
+    
+    this.setState({
+      menuData: pms?JSON.parse(pms):[]
+    });
+    
+  }
   showModal = () => {
     this.setState({
       visible: true
@@ -34,17 +43,21 @@ export default class NavBar extends React.Component {
   render() {
     // const { homeData={} } = this.props;
     const { img, visible,menuData } = this.state;
-    const listItem = menuData.map(md=>
-      <li key={md.name}> 
-        <i className={md.icon}></i> 
-        <NavLink  className="nav-link"  to={md.route}  activeClassName="nav-active">{md.name}</NavLink> 
-      </li> 
+    const listItem = menuData.map(md=>{
+      if(md.resourceType==0){
+        return  <li key={md.name}> 
+        
+        <NavLink  className="nav-link"  to={md.resourceUrl} activeClassName="nav-active">{md.name}</NavLink> 
+      </li>
+      }
+        
+      } 
     )
+    const userInfo = sessionStorage.getItem('userInfo')?JSON.parse(sessionStorage.getItem('userInfo')):null
     const menu = (
       <Menu>
       <Menu.Item><span onClick={this.logout}>退出</span></Menu.Item>
       </Menu>
-     
     );
     return (
       <div className="header">        
@@ -59,7 +72,7 @@ export default class NavBar extends React.Component {
               {listItem}
               </ul>
               <Dropdown overlay={menu} trigger={['click']}>
-                <span className="user-name">用 户</span>
+    <span className="user-name">{userInfo?userInfo.name:'未登录'}</span>
                 
               </Dropdown>
           </Col>

@@ -1,0 +1,11 @@
+
+.flex{
+    display: flex;
+    height: 100%;
+}
+.flexLeft{
+    width: 240px;
+}
+.flexMain{
+    flex: 1;
+}

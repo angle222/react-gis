@@ -8,7 +8,7 @@ class MyView extends Component {
     render() {
         console.log(this.props)
         return (
-            <div>
+            <div className="main-content">
                 <Header></Header>
                 {this.props.children}
             </div>

@@ -3,13 +3,14 @@ import { BrowserRouter as Router, Route,Redirect, Switch } from 'react-router-do
 import './App.css';
 
 import Footer from '../components/layout/Footer.jsx';
-import Home from '../components/layout/Home';
-import Header from '../components/layout/Header.jsx';
-import Menu1 from './mapservice/MapService';
 import Login from './login/Login';
-// import Myrouter from '../router.js';
-import MapService from './mapservice/MapService';
-import Settings from './settings/Settings';
+import Workspace from './mapservice/MapService';
+import IconManage from './IconManage/IconManage';
+import DataSource from './DataSource/DataSource';
+import TokenGrant from './TokenGrant/TokenGrant';
+import Privilege from './Privilege/Privilege';
+
+
 import MyView from './MyView/MyView';
 class App extends React.Component {
   render() {
@@ -19,8 +20,11 @@ class App extends React.Component {
           <Switch>
             <Route exact path='/' component={Login}/>
             <MyView>
-              <Route path='/mapservice' component={MapService}/>
-              <Route path='/setting' component={Settings}/>
+              <Route path='/workspace' component={Workspace}/>
+              <Route path='/iconManage' component={IconManage}/>
+              <Route path='/dataSource' component={DataSource}/>
+              <Route path='/tokenGrant' component={TokenGrant}/>
+              <Route path='/privilege' component={Privilege}/>
             </MyView>
             <Redirect to="/login"></Redirect>
           </Switch>
