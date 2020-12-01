@@ -1,4 +1,11 @@
 
+.nav-link{
+    color: #666666;
+}
+.listItem{
+    line-height: 40px;
+    text-align: center;
+}
 .flex{
     display: flex;
     height: 100%;

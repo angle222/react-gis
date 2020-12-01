@@ -1,48 +1,70 @@
 import React, { useState } from "react";
 // import { connect } from "react-redux";
-import { Table, Button ,Modal,Form, Input,  Checkbox} from "antd";
+import { Form, Table, Button ,Modal, Input, DatePicker, Checkbox,Radio,
+  Select,message} from "antd";
 import "./Privilege.module.css";
-import {getUserList} from "../../api/user"
+import {getUserList,getRole,getDepart,addUser,delUser,batchDelUser,findUser} from "../../api/user"
+import md5 from 'js-md5'
 const layout = {
   labelCol: {
-    span: 8,
+    span: 6,
   },
   wrapperCol: {
-    span: 16,
+    span: 18,
   },
 };
 const tailLayout = {
   wrapperCol: {
-    offset: 8,
-    span: 16,
+    offset: 6,
+    span: 18,
   },
 };
-const Myform = () => {
-  const onFinish = values => {
-    console.log('Success:', values);
+const Myform = (props) => {
+  console.log(props)
+  const {dep,role,formData} = props
+  
+  // hooks里面的form方法，
+  const [form] = Form.useForm();
+  // 弹出框之后默认选中某个值
+  form.setFieldsValue({
+    isAuth: 'false',
+  });
+  Object.keys(formData).forEach(fd=>{
+    form.setFieldsValue({
+      [fd]: formData[fd],
+    });
+  })
+  // 表单提交成功方法
+  const onFinish = fieldsValue => {
+    console.log('Success:', fieldsValue);
+    if(fieldsValue['validDate']){
+      fieldsValue['validDate'] =  fieldsValue['validDate'].format('YYYY-MM-DD')
+    }
+    fieldsValue.password = md5(fieldsValue.password)
+    addUser(fieldsValue).then(res=>{
+      console.log(res)
+      message.success('添加成功');
+      // 刷新列表
+      tableFun()
+    })
   };
-
+  // 表单提交失败方法
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
-  const [value,setValue] = useState()
-  function inputChange(e){
-    console.log(e.target,e.target.value)
-    setValue(e.target.value)
-  }
+
   return (
     <Form
       {...layout}
       name="basic"
+      form={form}
       initialValues={{
         remember: true,
       }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     >
-      <Form.Item
-        label="用户"
-        name="myname"
+      <Form.Item label="登录名" name="username"
         rules={[
           {
             required: true,
@@ -52,7 +74,30 @@ const Myform = () => {
       >
         <Input />
       </Form.Item>
-
+      <Form.Item label="用户名" name="name"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your name!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item label="所属部门" name="deptIds">
+          <Select allowClear mode="multiple">
+            {
+              dep.map(d=><Select.Option key={d.id} value={d.id}>{d.name}</Select.Option>)
+            }
+          </Select>
+      </Form.Item>
+      <Form.Item label="所属角色" name="roleId">
+          <Select>
+            {
+              role.map(d=><Select.Option key={d.id} value={d.id}>{d.name}</Select.Option>)
+            }
+          </Select>
+      </Form.Item>
       <Form.Item
         label="密码"
         name="password"
@@ -65,11 +110,48 @@ const Myform = () => {
       >
         <Input.Password />
       </Form.Item>
-
-      <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-        <Checkbox>记住我</Checkbox>
+      <Form.Item
+        label="确认密码"
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your password!',
+          },
+        ]}
+      >
+        <Input.Password />
       </Form.Item>
-
+      <Form.Item label="用户权限" name="isAuth">
+          <Radio.Group>
+            <Radio value="true">受限</Radio>
+            <Radio value="false">不受限</Radio>
+          </Radio.Group>
+      </Form.Item>
+      <Form.Item
+        noStyle
+        shouldUpdate={(prevValues, currentValues) => prevValues.isAuth !== currentValues.isAuth}
+      >
+        {
+        ({ getFieldValue }) => {
+          return getFieldValue('isAuth') === 'true' ? (
+            <div>
+              <Form.Item label="生效日期" name="validDate">
+                <DatePicker />
+              </Form.Item>
+              <Form.Item label="有效期" name="valid">
+                <Select>
+                  <Select.Option value="30">30天</Select.Option>
+                  <Select.Option value="60">60天</Select.Option>
+                  <Select.Option value="90">90天</Select.Option>
+                </Select>
+              </Form.Item>
+            </div>
+          ) : null;
+        }
+        }
+      </Form.Item>
+        
       <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit">
           保存
@@ -81,7 +163,7 @@ const Myform = () => {
   );
 };
 // export default Myform
-export default class MapService extends React.Component {
+export default class Myuser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,7 +175,8 @@ export default class MapService extends React.Component {
       pageSize: 10,
       total:0,
       loading:false,
-      searchValue:''
+      searchValue:'',
+      formData:null
     };
   }
   componentDidMount(){
@@ -103,9 +186,15 @@ export default class MapService extends React.Component {
     })
     // 请求数据
     this.getData()
+    // 获取部门列表    
+    // 获取角色列表
+    this.getUserData()
   }
+  // 表格数据
   async getData(){
+    console.log(this)
     this.setState({
+      visible:false,
       loading: true
     });
     console.log(this.state.searchValue)
@@ -118,12 +207,21 @@ export default class MapService extends React.Component {
       loading: false
     });
   }
+  // 新建弹框
   showModal = () => {
     this.setState({
       visible: true
     });
-  };
-
+  }
+  // 获取新增用户需要的数据
+  async getUserData(){
+    let dep = await getDepart()
+    let role = await getRole()
+    this.setState({
+      dep,
+      role
+    });
+  }
   handleOk = e => {
     console.log(e);
     this.setState({
@@ -137,20 +235,38 @@ export default class MapService extends React.Component {
       visible: false
     });
   };
-  banchDel = ()=>{
+  banchDel = async ()=>{
     // 批量删除
     const {selectedRowKeys} = this.state;
+    await batchDelUser({ids:selectedRowKeys})
+    message.success('删除成功')
+    this.getData()
     console.log('要删除的行',selectedRowKeys)
   }
+  // 单个删除
   singleDel = (id)=>{
+    const self = this;
     // 批量删除
-    return function(){
+    return async function(){
       console.log('要删除的行',id)
+      await delUser(id)
+      message.success('删除成功')
+      self.getData()
     }
     
   }
+  // 编辑
+  edit = (id)=>{
+    return async ()=>{
+      let data = await findUser(id)
+      this.setState({
+        formData:data,
+        visible: true
+      });
+    }  
+  }
   onSelectChange = selectedRowKeys => {
-    // console.log('selectedRowKeys changed: ', selectedRowKeys);
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   };
   inputChange=(e)=>{
@@ -161,8 +277,8 @@ export default class MapService extends React.Component {
   }
   render() {
     // const { homeData={} } = this.props;
-    console.log('render')
-    const {visible,dataSource,pageSize,pageNumber,total,loading ,selectedRowKeys} = this.state;
+    const {visible,dataSource,pageSize,pageNumber,total,loading ,selectedRowKeys,formData,dep,role} = this.state;
+    
     const stationStateDict = {
       2:'成功',
       1:'失败'
@@ -214,8 +330,8 @@ export default class MapService extends React.Component {
           
           <span>
             <a onClick={this.singleDel(record.id)} style={{ marginRight: 16 }}>删除</a>
-            <a className="ant-dropdown-link">
-              更多 
+            <a onClick={this.edit(record.id)} style={{ marginRight: 16 }} >
+              编辑 
             </a>
           </span>
         ),
@@ -271,7 +387,7 @@ export default class MapService extends React.Component {
             </Button>,
           ]}
         >
-          <Myform/>
+          <Myform dep={dep} role={role} formData={formData} tableFun={this.getData.bind(this)} />
         </Modal>
       </div>
     );

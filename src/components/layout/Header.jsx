@@ -47,7 +47,7 @@ export default class NavBar extends React.Component {
       if(md.resourceType==0){
         return  <li key={md.name}> 
         
-        <NavLink  className="nav-link"  to={md.resourceUrl} activeClassName="nav-active">{md.name}</NavLink> 
+        <NavLink  to={md.resourceUrl} className="nav-link" activeClassName="nav-active">{md.name}</NavLink> 
       </li>
       }
         
