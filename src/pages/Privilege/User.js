@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 // import { connect } from "react-redux";
-import { Form, Table, Button ,Modal, Input, DatePicker, Checkbox,Radio,
-  Select,message} from "antd";
+import { Form, Table, Button ,Modal, Input, DatePicker, Checkbox,Radio,Select,message} from "antd";
 import "./Privilege.module.css";
 import {getUserList,getRole,getDepart,addUser,delUser,batchDelUser,findUser} from "../../api/user"
 import md5 from 'js-md5'
@@ -19,61 +18,94 @@ const tailLayout = {
     span: 18,
   },
 };
-const Myform = (props) => {
-  console.log(props)
-  const {dep,role,formData} = props
+const Myform1 = (props) => {
+  console.log('from组件：',props)
+  const {visible,dep,role,formData,isEdit,onCancel,tableFun} = props
   
   // hooks里面的form方法，
   const [form] = Form.useForm();
-  // 弹出框之后默认选中某个值
-  form.setFieldsValue({
-    isAuth: 'false',
-  });
-  Object.keys(formData).forEach(fd=>{
-    form.setFieldsValue({
-      [fd]: formData[fd],
-    });
-  })
-  // 表单提交成功方法
-  const onFinish = fieldsValue => {
-    console.log('Success:', fieldsValue);
-    if(fieldsValue['validDate']){
-      fieldsValue['validDate'] =  fieldsValue['validDate'].format('YYYY-MM-DD')
-    }
-    fieldsValue.password = md5(fieldsValue.password)
-    addUser(fieldsValue).then(res=>{
-      console.log(res)
-      message.success('添加成功');
-      // 刷新列表
-      tableFun()
-    })
-  };
-  // 表单提交失败方法
-  const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
-  };
+  
+  console.log(Form.useForm())
+  // 弹框弹出事件
+  if(isEdit){
+    form.setFieldsValue(formData)
+  }
+  const handleOk = e => {
+    console.log(e);
 
+    form.validateFields().then((fieldsValue) => {
+      if(fieldsValue['validDate']){
+        fieldsValue['validDate'] =  fieldsValue['validDate'].format('YYYY-MM-DD')
+      }
+      fieldsValue.password = md5(fieldsValue.password)
+      addUser(fieldsValue).then(res=>{
+        console.log(res)
+        message.success('添加成功');
+        form.resetFields();
+        // 刷新列表
+        tableFun()
+      })
+    }).catch((info) => {
+      console.log('Validate Failed:', info);
+    });
+  };
+// 弹框取消事件
+  const handleCancel = e => {
+    // 清空form表单
+    form.resetFields()
+    onCancel()
+    
+  };
   return (
+    <Modal
+          title={isEdit?'编辑数据':'新建数据'}
+          visible={visible}
+          onOk={handleOk}
+          onCancel={onCancel}
+          footer={[
+            <Button key="back" onClick={handleCancel}>
+              取消
+            </Button>,
+            <Button key="submit" type="primary" onClick={handleOk}>
+              确定
+            </Button>,
+          ]}
+        >
+          
+        
     <Form
       {...layout}
       name="basic"
       form={form}
-      initialValues={{
-        remember: true,
-      }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
+
     >
-      <Form.Item label="登录名" name="username"
+      <Form.Item label="用户名" name="username"
         rules={[
           {
             required: true,
-            message: 'Please input your username!',
+            message: 'Please input your name!',
           },
         ]}
       >
         <Input />
       </Form.Item>
+      {/* <Form.Item label="登录名" name="username">
+        {getFieldDecorator("username",
+          {
+            rules: [
+              {
+                required: true,
+                message: 'Please input your username!',
+              },
+            ],
+            initialValue: moment(data.StartDate),
+          }
+                  )(
+                    <Input />
+                  )}
+       
+      </Form.Item> */}
+
       <Form.Item label="用户名" name="name"
         rules={[
           {
@@ -87,17 +119,19 @@ const Myform = (props) => {
       <Form.Item label="所属部门" name="deptIds">
           <Select allowClear mode="multiple">
             {
-              dep.map(d=><Select.Option key={d.id} value={d.id}>{d.name}</Select.Option>)
+              dep&&dep.map(d=><Select.Option key={d.id} value={d.id}>{d.name}</Select.Option>)
             }
           </Select>
       </Form.Item>
       <Form.Item label="所属角色" name="roleId">
           <Select>
             {
-              role.map(d=><Select.Option key={d.id} value={d.id}>{d.name}</Select.Option>)
+             role&& role.map(d=><Select.Option key={d.id} value={d.id}>{d.name}</Select.Option>)
             }
           </Select>
       </Form.Item>
+      {!isEdit&&
+      <div>
       <Form.Item
         label="密码"
         name="password"
@@ -122,6 +156,8 @@ const Myform = (props) => {
       >
         <Input.Password />
       </Form.Item>
+      </div>
+      }
       <Form.Item label="用户权限" name="isAuth">
           <Radio.Group>
             <Radio value="true">受限</Radio>
@@ -152,16 +188,192 @@ const Myform = (props) => {
         }
       </Form.Item>
         
-      <Form.Item {...tailLayout}>
+      {/* <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit">
           保存
         </Button>
-      </Form.Item>
+      </Form.Item> */}
       {/* <input value={value} placeholder="请输入" onChange={(e)=>inputChange(e)} onInput={(e)=>inputChange(e)}/>
       <span>{value}</span> */}
     </Form>
+    </Modal>
   );
 };
+class Myform extends React.Component{
+  form = React.createRef();
+  handleOk = e => {
+    console.log(e);
+
+    this.form.current.validateFields().then((fieldsValue) => {
+      if(fieldsValue['validDate']){
+        fieldsValue['validDate'] =  fieldsValue['validDate'].format('YYYY-MM-DD')
+      }
+      fieldsValue.password = md5(fieldsValue.password)
+      addUser(fieldsValue).then(res=>{
+        console.log(res)
+        message.success('添加成功');
+        this.form.current.resetFields();
+        // 刷新列表
+        tableFun()
+      })
+    }).catch((info) => {
+      console.log('Validate Failed:', info);
+    });
+  };
+// 弹框取消事件
+  handleCancel = e => {
+    // 清空form表单
+    this.form.current.resetFields()
+    this.props.onCancel()
+    
+  };
+  componentDidMount(){
+    console.log('modal加载',this.props.formData)
+  }
+  componentDidUpdate(){
+    console.log('modal更新',this.props.formData,this.props.isEdit,this.props.visible)
+    if(this.props.isEdit&&this.props.visible)this.form.current.setFieldsValue(this.props.formData)
+  }
+  render(){
+    const {visible,dep,role,formData,isEdit,onCancel,tableFun} = this.props
+    // const { getFieldDecorator } = this.props.form;
+    console.log('form属性',this.form)
+    return (
+      <Modal
+            title={isEdit?'编辑数据':'新建数据'}
+            visible={visible}
+            onOk={this.handleOk}
+            onCancel={onCancel}
+            footer={[
+              <Button key="back" onClick={this.handleCancel}>
+                取消
+              </Button>,
+              <Button key="submit" type="primary" onClick={this.handleOk}>
+                确定
+              </Button>,
+            ]}
+          >
+            
+          
+      <Form
+        {...layout}
+        name="basic"
+        ref={this.form}
+  
+      >
+        <Form.Item label="用户名" name="username"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your name!',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        {/* <Form.Item label="登录名" name="username">
+          {getFieldDecorator("username",
+            {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please input your username!',
+                },
+              ],
+              initialValue: moment(data.StartDate),
+            }
+                    )(
+                      <Input />
+                    )}
+         
+        </Form.Item> */}
+  
+        <Form.Item label="用户名" name="name"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your name!',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item label="所属部门" name="deptIds">
+            <Select allowClear mode="multiple">
+              {
+                dep&&dep.map(d=><Select.Option key={d.id} value={d.id}>{d.name}</Select.Option>)
+              }
+            </Select>
+        </Form.Item>
+        <Form.Item label="所属角色" name="roleId">
+            <Select>
+              {
+               role&& role.map(d=><Select.Option key={d.id} value={d.id}>{d.name}</Select.Option>)
+              }
+            </Select>
+        </Form.Item>
+        {!isEdit&&
+        <div>
+        <Form.Item
+          label="密码"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password!',
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+        <Form.Item
+          label="确认密码"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password!',
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+        </div>
+        }
+        <Form.Item label="用户权限" name="isAuth">
+            <Radio.Group>
+              <Radio value="true">受限</Radio>
+              <Radio value="false">不受限</Radio>
+            </Radio.Group>
+        </Form.Item>
+        <Form.Item
+          noStyle
+          shouldUpdate={(prevValues, currentValues) => prevValues.isAuth !== currentValues.isAuth}
+        >
+          {
+          ({ getFieldValue }) => {
+            return getFieldValue('isAuth') === 'true' ? (
+              <div>
+                <Form.Item label="生效日期" name="validDate">
+                  <DatePicker />
+                </Form.Item>
+                <Form.Item label="有效期" name="valid">
+                  <Select>
+                    <Select.Option value="30">30天</Select.Option>
+                    <Select.Option value="60">60天</Select.Option>
+                    <Select.Option value="90">90天</Select.Option>
+                  </Select>
+                </Form.Item>
+              </div>
+            ) : null;
+          }
+          }
+        </Form.Item>
+      </Form>
+      </Modal>
+    );
+  }
+}
 // export default Myform
 export default class Myuser extends React.Component {
   constructor(props) {
@@ -176,7 +388,8 @@ export default class Myuser extends React.Component {
       total:0,
       loading:false,
       searchValue:'',
-      formData:null
+      formData:{isAuth:'false'},
+      isEdit:false
     };
   }
   componentDidMount(){
@@ -192,16 +405,13 @@ export default class Myuser extends React.Component {
   }
   // 表格数据
   async getData(){
-    console.log(this)
     this.setState({
-      visible:false,
       loading: true
     });
-    console.log(this.state.searchValue)
     let postData = {pageNumber:this.state.pageNumber,pageSize:this.state.pageSize,name:this.state.searchValue}
     let res = await getUserList(postData);
-    console.log(res)
     this.setState({
+      visible:false,
       total:res.totalElements,
       dataSource:res.content,
       loading: false
@@ -210,7 +420,13 @@ export default class Myuser extends React.Component {
   // 新建弹框
   showModal = () => {
     this.setState({
-      visible: true
+      visible: true,
+      isEdit:false
+    });
+  }
+  setVisible = (val) => {
+    this.setState({
+      visible: val
     });
   }
   // 获取新增用户需要的数据
@@ -222,19 +438,7 @@ export default class Myuser extends React.Component {
       role
     });
   }
-  handleOk = e => {
-    console.log(e);
-    this.setState({
-      visible: false
-    });
-  };
 
-  handleCancel = e => {
-    console.log(e);
-    this.setState({
-      visible: false
-    });
-  };
   banchDel = async ()=>{
     // 批量删除
     const {selectedRowKeys} = this.state;
@@ -261,7 +465,8 @@ export default class Myuser extends React.Component {
       let data = await findUser(id)
       this.setState({
         formData:data,
-        visible: true
+        visible: true,
+        isEdit:true
       });
     }  
   }
@@ -273,13 +478,14 @@ export default class Myuser extends React.Component {
     console.log(e.target,e.target.value)
     this.setState({
       value : e.target.value
-  })
+    })
   }
   render() {
     // const { homeData={} } = this.props;
-    const {visible,dataSource,pageSize,pageNumber,total,loading ,selectedRowKeys,formData,dep,role} = this.state;
-    
+    const {visible,dataSource,pageSize,pageNumber,total,loading ,selectedRowKeys,formData,dep,role,isEdit} = this.state;
+    console.log('render',dep)
     const stationStateDict = {
+      1:"we",
       2:'成功',
       1:'失败'
     }
@@ -373,22 +579,12 @@ export default class Myuser extends React.Component {
         <b>{this.state.value}</b>
         
         <Table bordered loading={loading} rowKey="id" rowSelection={rowSelection} dataSource={dataSource} pagination={pagination} columns={columns} />
-        <Modal
-          title="新建数据"
-          visible={visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button key="back" onClick={this.handleCancel}>
-              取消
-            </Button>,
-            <Button key="submit" type="primary" onClick={this.handleOk}>
-              确定
-            </Button>,
-          ]}
-        >
-          <Myform dep={dep} role={role} formData={formData} tableFun={this.getData.bind(this)} />
-        </Modal>
+ 
+        <Myform isEdit={isEdit} dep={dep} role={role} formData={formData} tableFun={this.getData.bind(this)} visible={visible}
+        onCancel={() => {
+          this.setVisible(false);
+        }} />
+
       </div>
     );
     

@@ -5,12 +5,12 @@
     "ecmaFeatures": {
       "jsx": true
     }
+  },
+  "rules": {
+    "indent": [
+      "error",
+      2,
+      {"SwitchCase": 1}
+    ]
   }
-  // "rules": {
-  //   "indent": [
-  //     "error",
-  //     4,
-  //     {"SwitchCase": 1}
-  //   ]
-  // }
 }

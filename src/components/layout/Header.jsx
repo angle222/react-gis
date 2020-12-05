@@ -4,7 +4,8 @@ import { NavLink  } from 'react-router-dom';
 import { Row, Col ,Dropdown,Menu} from 'antd';
 import {$_menuData} from '../menu';
 import {loginOut} from "../../api/user"
-export default class NavBar extends React.Component {
+import { connect } from "react-redux";
+class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,6 +44,8 @@ export default class NavBar extends React.Component {
   render() {
     // const { homeData={} } = this.props;
     const { img, visible,menuData } = this.state;
+    const {mystate} = this.props
+    console.log('状态',mystate)
     const listItem = menuData.map(md=>{
       if(md.resourceType==0){
         return  <li key={md.name}> 
@@ -51,7 +54,7 @@ export default class NavBar extends React.Component {
       </li>
       }
         
-      } 
+    } 
     )
     const userInfo = sessionStorage.getItem('userInfo')?JSON.parse(sessionStorage.getItem('userInfo')):null
     const menu = (
@@ -82,3 +85,30 @@ export default class NavBar extends React.Component {
     );
   }
 }
+const mapStateToProps = (state, ownProps) => {
+  // ... 从state中处理的一些数据，以及可选的ownProps
+  console.log(state)
+  return{
+    mystate:state
+  }
+};
+// 这里要定义修改store的方法
+const mapDispatchToProps = {
+  // ... 通常是action creators构成的对象
+  changeName:()=>(
+    {
+      type:'setName',
+      payload:'marry'
+    }
+    ),
+  toggle:()=>{
+    return {
+      type:'toggle',
+    }
+  }
+};
+// 把上面的两个对象当成属性传递到组件中
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+  )(NavBar)

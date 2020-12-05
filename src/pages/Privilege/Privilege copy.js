@@ -60,12 +60,12 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
   // ... 通常是action creators构成的对象
-  changeName:()=>{
-    return {
+  changeName:()=>(
+    {
       type:'setName',
       payload:'marry'
     }
-  },
+    ),
   toggle:()=>{
     return {
       type:'toggle',
