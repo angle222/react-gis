@@ -13,11 +13,15 @@ var mock = !false;
 // 获取本地mock列表
 // 此处接口地址对应其他组建内请求的真实接口地址！！！
 if (mock) {
+  console.log('mock')
   router.post("/v1/main/list", function*(next) {
     const data = require("./../mock/entryData/list");
     this.body = data;
   });
-
+  router.post("/datagdw/user/login", function*(next) {
+    const data = require("./../mock/entryData/list");
+    this.body = data;
+  });
   // other post 
   // router.post("/v1/table/list2", function*(next) {
   //   const data = require("./../mock/entryData/list");
@@ -36,14 +40,14 @@ app.use(function*(next) {
   // this.query.mockUserId = '0434324346539122932566287';
   // this.query.corpId = '82332bac8d9264b69135c2f4657eb6378f';
 
-  // console.log(
-  //   "使用 用户ID=" +
-  //   this.query.mockUserId +
-  //   " 公司ID=" +
-  //   this.query.corpId +
-  //   " 公司名称=" +
-  //   this.mockName || "请补充"
-  // );
+  console.log(
+    "使用 用户ID=" +
+    this.query.mockUserId +
+    " 公司ID=" +
+    this.query.corpId +
+    " 公司名称=" +
+    this.mockName || "请补充"
+  );
 
   // this.querystring = querystring.stringify(this.query);
 
@@ -64,6 +68,7 @@ var server = require("http").createServer(function(req, res) {
 
   // req.headers['cookie'] =  cookie;
   // req.rawHeaders['cookie'] = cookie;
+  console.log('cb')
   callback(req, res);
 });
 server.listen(3001, function() {

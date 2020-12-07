@@ -157,7 +157,7 @@ export default class MapService extends React.Component {
     console.log(e.target,e.target.value)
     this.setState({
       value : e.target.value
-  })
+    })
   }
   render() {
     // const { homeData={} } = this.props;

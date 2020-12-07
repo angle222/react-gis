@@ -153,7 +153,7 @@ export default class MapService extends React.Component {
     console.log(e.target,e.target.value)
     this.setState({
       value : e.target.value
-  })
+    })
   }
   render() {
     // const { homeData={} } = this.props;
@@ -180,7 +180,7 @@ export default class MapService extends React.Component {
           showTitle: false,
         },
         render: resources => {
-         const r =  resources.map(resource => {
+          const r =  resources.map(resource => {
             return (
               <span key={resource.id}>{resource.name} | </span>
             );
